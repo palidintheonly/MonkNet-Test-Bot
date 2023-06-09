@@ -1,0 +1,47 @@
+{
+  "name": "monknet",
+  "author": "Robert Borghese",
+  "main": "bot.js",
+  "version": "1.1.0",
+  "dependencies": {
+    "@discordjs/opus": "latest",
+    "@discordjs/voice": "latest",
+    "@themondon/discord-player-v13": "^5.2.4",
+    "chalk": "^5.2.0",
+    "discord.js": "^13.8.0",
+    "ent": "^2.2.0",
+    "ffmpeg-static": "latest",
+    "firebase": "^9.22.1",
+    "fstorm": "latest",
+    "index.js": "^0.0.3",
+    "jimp": "^0.3.5",
+    "jsonpath": "^1.1.1",
+    "loadavg-windows": "^1.1.1",
+    "moment": "^2.29.4",
+    "node": "^19.2.0",
+    "node-cron": "^3.0.2",
+    "normalize-date": "^0.0.4",
+    "tweetnacl": "latest",
+    "weather-js": "^2.0.0",
+    "xmldom": "^0.6.0",
+    "xpath": "^0.0.32",
+    "zip-local": "^0.3.5"
+  },
+  "description": "> # 06.04.2023-bot-t35t-4048 > 06.04.2023¬bot t35t#4048",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PalNet-Dev/MonkNet-Test-Bot.git"
+  },
+  "license": "UNLICENCED",
+  "bugs": {
+    "url": "https://github.com/PalNet-Dev/MonkNet-Test-Bot/issues"
+  },
+  "homepage": "https://github.com/PalNet-Dev/MonkNet-Test-Bot#readme",
+  "keywords": [
+    "tst"
+  ],
+  "devDependencies": {}
+}
