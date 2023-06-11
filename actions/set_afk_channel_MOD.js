@@ -2,33 +2,29 @@ module.exports = {
   name: 'Set AFK Channel',
   section: 'Server Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/set_afk_channel_MOD.js',
   },
 
-  subtitle(data) {
-    const channels = [
-      "Command Author's Voice Ch.",
-      "Mentioned User's Voice Ch.",
-      'Default Voice Channel',
-      'Temp Variable',
-      'Server Variable',
-      'Global Variable',
-    ];
-    return `${channels[parseInt(data.afkchannel, 10)]}`;
+  subtitle(data, presets) {
+    return presets.getChannelText(data.afkchannel, data.varName);
   },
 
   fields: ['server', 'varName', 'afkchannel', 'varNameChannel'],
 
   html() {
     return `
-<server-input dropdownLabel="Source Server" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>
-<br><br><br>
+    <div>
+      <server-input dropdownLabel="Source Server" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>
+    </div>
+    <br><br><br>
 
-<voice-channel-input dropdownLabel="Set AFK Channel To:" selectId="afkchannel" variableContainerId="varNameContainerr" variableInputId="varNameChannel"></voice-channel-input>
+    <div>
+      <voice-channel-input dropdownLabel="Set AFK Channel To:" selectId="afkchannel" variableContainerId="varNameContainerr" variableInputId="varNameChannel"></voice-channel-input>
+    </div>
 `;
   },
 

@@ -2,7 +2,7 @@ module.exports = {
   name: 'Set AFK Timeout',
   section: 'Server Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -11,7 +11,7 @@ module.exports = {
 
   subtitle(data) {
     if (data.serverAfkTime === '60') {
-      return '1 Minutes';
+      return '1 Minute';
     }
     if (data.serverAfkTime === '300') {
       return '5 Minutes';
@@ -23,22 +23,24 @@ module.exports = {
       return '30 Minutes';
     }
     if (data.serverAfkTime === '3600') {
-      return '1 Hours';
+      return '1 Hour';
     }
-    return `${data.serverAfkTime} Seconds`;
+    return `${data.serverAfkTime} ${data.serverAfkTime === '1' ? 'Second' : 'Seconds'}`;
   },
 
   fields: ['server', 'varName', 'serverAfkTime'],
 
   html() {
     return `
-<server-input dropdownLabel="Source Server" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>
-<br><br><br>
+    <div>
+      <server-input dropdownLabel="Source Server" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>
+    </div>
+    <br><br><br>
 
-<div style="padding-top: 8px; width: 90%;">
-  Timeout:<br>
+<div style="padding-top: 8px;">
+  <span class="dbminputlabel">Timeout</span>
   <select id="serverAfkTime" class="round">
-  <option value="60" selected>1 Minutes</option>
+  <option value="60" selected>1 Minute</option>
   <option value="300">5 Minutes</option>
   <option value="900">15 Minutes</option>
   <option value="1800">30 Minutes</option>

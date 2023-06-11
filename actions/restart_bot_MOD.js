@@ -3,7 +3,7 @@ module.exports = {
   name: 'Restart Bot',
   section: 'Bot Client Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -18,11 +18,13 @@ module.exports = {
 
   html() {
     return `
-<div style="float: left; width: 105%;">
-  Your main bot file:<br>
+<div style="float: left; width: 100%;">
+  <span class="dbminputlabel">Bot File</span>
   <input id="filename" class="round" type="text" value="bot.js"><br>
 </div>
-<div><br>
+<br>
+
+<div>
   <p><u>NOTE:</u><br>
   Any action that is below this mod will not be executed!</p>
 </div>`;
@@ -35,7 +37,7 @@ module.exports = {
     const filename = this.evalMessage(data.filename, cache);
     this.getDBM().Bot.bot.destroy();
     const child = require('child_process');
-    child.spawnSync('node', [filename], { cwd: process.cwd() });
+    child.spawnSync('node', [filename], { cwd: process.cwd(), stdio: 'inherit' });
     process.exit();
   },
 

@@ -2,7 +2,7 @@ module.exports = {
   name: 'Local Database',
   section: 'Database',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -20,7 +20,7 @@ module.exports = {
 
   fields: ['dbformat', 'dboperation', 'dbpath', 'dbvalue', 'storage', 'varName'],
 
-  html(_isEvent, data) {
+  html() {
     return `
  <div id="docs" style="float: left;">
  </div><br>
@@ -34,10 +34,12 @@ module.exports = {
     <option value="enmap">Enmap</option>
    </select>
   </div>
- </div><br><br>
+ </div>
+ <br><br>
+ 
  <div>
   <div style="float: left; width: 20%;">
-   Operation:<br>
+   <span class="dbminputlabel">Operation</span>
    <select id="dboperation" class="round" onchange="glob.onChangeOperation(this)">
     <option value="get" selected>Get/Fetch</option>
     <option value="store">Store/Save</option>
@@ -48,24 +50,18 @@ module.exports = {
    <div id="dbpathlabel">Something has broken. You should not be seeing this message.</div>
    <input id="dbpath" class="round" type="text"><br>
   </div>
- </div><br><br><br>
+ </div>
+ <br><br><br>
+ 
  <div id="dbvaluediv">
   <div id="dbvaluelabel" style="float: left;">
    Something has broken. You should not be seeing this message.
   </div>
   <input id="dbvalue" class="round" type="text" placeholder="Leave blank for no value."><br>
  </div>
+
  <div>
-  <div style="float: left; width: 25%;">
-   Store In:<br>
-   <select id="storage" class="round">
-    ${data.variables[1]}
-   </select>
-  </div>
-  <div style="float: right; padding-left: 15px; float: left; width: 74%;">
-   Variable Name:<br>
-   <input id="varName" class="round" type="text"><br>
-  </div>
+   <store-in-variable dropdownLabel="Store In" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>
  </div>`;
   },
 
@@ -248,40 +244,47 @@ module.exports = {
     const splitpath = dbpath.split('.');
     const dbvalue = this.eval(this.evalMessage(data.dbvalue, cache), cache);
     const { dbformat } = data;
-    const db = this.getMods().require(dbformat); // safe require.
+    let db = this.getMods().require(dbformat); // safe require.
     let output;
 
     if (!dbpath || !splitpath[0]) throw new Error('No DB path provided.');
 
     switch (dbformat) {
-      case 'quick.db': // quick.db
+      case 'quick.db': {
+        const version = db.version;
+        // Support older versions of quick.db (v7)
+        if (!version) {
+          db = new db.QuickDB();
+        }
         switch (dboperation) {
           case 'get':
-            output = db.get(dbpath);
+            output = await db.get(dbpath);
             break;
           case 'store':
-            output = db.set(dbpath, dbvalue);
+            output = await db.set(dbpath, dbvalue);
             break;
           case 'delete':
-            output = db.delete(dbpath);
+            output = await db.delete(dbpath);
             break;
           case 'has':
-            output = db.has(dbpath);
+            output = await db.has(dbpath);
             break;
           case 'add':
-            output = db.add(dbpath, dbvalue);
+            output = await db.add(dbpath, dbvalue);
             break;
           case 'subtract':
-            output = db.subtract(dbpath, dbvalue);
+            if (!version) output = await db.sub(dbpath, dbvalue);
+            else output = await db.subtract(dbpath, dbvalue);
             break;
           case 'push':
-            output = db.push(dbpath, dbvalue);
+            output = await db.push(dbpath, dbvalue);
             break;
           case 'all':
-            output = db.all();
+            output = await db.all();
             break;
         }
         break;
+      }
       case 'enmap': {
         // enmap
         const value = splitpath.slice(2, splitpath.length);

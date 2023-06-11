@@ -1,22 +1,26 @@
 const Mods = {
   DBM: null,
 
-  installModule(moduleName) {
+  installModule(moduleName, version) {
     return new Promise((resolve) => {
-      require('child_process').execSync(`npm i ${moduleName}`);
       try {
-        resolve(require(moduleName));
+        require('child_process').execSync(`npm i ${version ? `${moduleName}@${version}` : moduleName}`);
+        return resolve(require(moduleName));
       } catch (error) {
-        console.error(`Failed to install ${moduleName}. Error: ${error.message}`);
+        return console.log(
+          `The required module "${
+            version ? `${moduleName}@${version}` : moduleName
+          }" has been installed. Please restart your bot.`,
+        );
       }
     });
   },
 
-  require(moduleName) {
+  require(moduleName, version) {
     try {
       return require(moduleName);
     } catch (e) {
-      this.installModule(moduleName);
+      this.installModule(moduleName, version);
       return require(moduleName);
     }
   },
@@ -136,6 +140,7 @@ const Mods = {
 
     /* eslint-enable */
   },
+
   getWebhook(type, varName, cache) {
     const { server } = cache;
     switch (type) {
@@ -191,7 +196,7 @@ module.exports = {
   displayName: 'Dependencies',
 
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -203,7 +208,7 @@ module.exports = {
     <div id ="wrexdiv" style="width: 550px; height: 350px; overflow-y: scroll;">
       <p>
         <u>DBM Mods Dependencies:</u><br><br>
-        This isn't an action, but it is required for the actions under this category.<br><br>
+        This isn't an action, but it is required for most of the mods.<br><br>
         <bCreate action wont do anything</b>
       </p>
     </div>`;

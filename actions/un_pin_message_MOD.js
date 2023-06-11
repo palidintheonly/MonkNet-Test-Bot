@@ -2,24 +2,24 @@ module.exports = {
   name: 'Un-Pin Message',
   section: 'Messaging',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/un_pin_message_MOD.js',
   },
 
-  subtitle(data) {
-    const names = ['Command Message', 'Temp Variable', 'Server Variable', 'Global Variable'];
-    const index = parseInt(data.storage, 10);
-    return data.storage === '0' ? `Un-Pin ${names[index]}` : `Un-Pin ${names[index]} (${data.varName})`;
+  subtitle(data, presets) {
+    return `Un-Pin ${presets.getMessageText(data.storage, data.varName)}`;
   },
 
   fields: ['storage', 'varName'],
 
   html() {
     return `
-<message-input dropdownLabel="Source Message" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></message-input>`;
+    <div>
+      <message-input dropdownLabel="Source Message" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></message-input>
+    </div>`;
   },
 
   init() {},

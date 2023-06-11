@@ -3,38 +3,24 @@ module.exports = {
   name: 'Delete Webhook',
   section: 'Webhook Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/delete_webhook_MOD.js',
   },
 
-  subtitle(data) {
-    const names = ['You cheater!', 'Temp Variable', 'Server Variable', 'Global Variable'];
-    return `${names[parseInt(data.webhook, 10)]} - ${data.varName}`;
+  subtitle(data, presets) {
+    return presets.getVariableText(data.webhook, data.varName);
   },
 
   fields: ['webhook', 'varName'],
 
-  html(_isEvent, data) {
-    return `
-<div style="float: left; width: 35%;">
-  Source Webhook:<br>
-  <select id="webhook" class="round" onchange="glob.refreshVariableList(this)">
-    ${data.variables[1]}
-  </select>
-</div>
-<div id="varNameContainer" style="float: right; width: 60%;">
-  Variable Name:<br>
-  <input id="varName" class="round" type="text" list="variableList"><br>
-</div>`;
+  html() {
+    return `<store-in-variable dropdownLabel="Source Webhook" selectId="webhook" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>`;
   },
 
-  init() {
-    const { glob, document } = this;
-    glob.refreshVariableList(document.getElementById('webhook'));
-  },
+  init() {},
 
   async action(cache) {
     const data = cache.actions[cache.index];

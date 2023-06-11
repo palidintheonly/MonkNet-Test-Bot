@@ -2,7 +2,7 @@ module.exports = {
   name: 'Send Message to Console',
   section: 'Other Stuff',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -10,7 +10,7 @@ module.exports = {
   },
 
   subtitle(data) {
-    if (data.tosend.length > 0) {
+    if (data.tosend?.length > 0) {
       return `<font color="${data.color}">${data.tosend}</font>`;
     }
     return 'Please enter a message!';
@@ -21,11 +21,13 @@ module.exports = {
   html() {
     return `
 <div>
-  Color:<br>
+  <span class="dbminputlabel">Color</span>
   <input type="color" id="color" value="#f2f2f2">
-</div><br>
+</div>
+<br>
+
 <div style="padding-top: 8px;">
-  Message to send:<br>
+  <span class="dbminputlabel">Message To Send</span>
   <textarea id="tosend" rows="4" style="width: 99%; font-family: monospace; white-space: nowrap; resize: none;"></textarea>
 </div>`;
   },
@@ -42,7 +44,5 @@ module.exports = {
     this.callNextAction(cache);
   },
 
-  mod(DBM) {
-    DBM.Actions['Send Message to Console (Logs)'] = DBM.Actions['Send Message to Console'];
-  },
+  mod() {},
 };

@@ -2,32 +2,24 @@ module.exports = {
   name: 'Sync Channel Permissions',
   section: 'Permission Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/sync_channel_permissions_MOD.js',
   },
 
-  subtitle(data) {
-    const names = [
-      'Same Channel',
-      'Mentioned Channel',
-      'Default Channel',
-      'Temp Variable',
-      'Server Variable',
-      'Global Variable',
-    ];
-    const index = parseInt(data.storage, 10);
-    return index < 3 ? `${names[index]}` : `${names[index]} - ${data.varName}`;
+  subtitle(data, presets) {
+    return presets.getChannelText(data.storage, data.varName);
   },
 
   fields: ['storage', 'varName', 'permission', 'state'],
 
   html() {
     return `
-<channel-input dropdownLabel="Source Channel" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></channel-input>
-`;
+    <div>
+      <channel-input dropdownLabel="Source Channel" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></channel-input>
+    </div>`;
   },
 
   init() {},

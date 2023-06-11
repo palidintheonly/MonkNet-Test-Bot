@@ -1,46 +1,34 @@
-/* eslint-disable no-unused-vars */
 module.exports = {
   name: 'Edit Emoji',
   section: 'Emoji Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/edit_emoji_MOD.js',
   },
 
-  subtitle(data) {
-    const emoji = ['You cheater!', 'Temp Variable', 'Server Variable', 'Global Variable'];
-    return `${emoji[parseInt(data.storage, 10)]}`;
+  subtitle(data, presets) {
+    return presets.getVariableText(data.storage, data.varName);
   },
 
   fields: ['storage', 'varName', 'emojiName'],
 
-  html(_isEvent, data) {
+  html() {
     return `
 <div>
-  <div style="float: left; width: 35%;">
-    Source Emoji:<br>
-    <select id="storage" class="round" onchange="glob.refreshVariableList(this)">
-      ${data.variables[1]}
-    </select>
-  </div>
-  <div id="varNameContainer" style="float: right; width: 60%;">
-    Variable Name:<br>
-    <input id="varName" class="round" type="text" list="variableList"><br>
-  </div>
-</div><br><br><br>
+  <store-in-variable dropdownLabel="Source Emoji" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>
+</div>
+<br><br><br>
+
 <div style="padding-top: 8px;">
-  Emoji Name:<br>
+  <span class="dbminputlabel">Emoji Name</span>
   <input id="emojiName" placeholder="Leave blank to not edit!" class="round" type="text">
 </div>`;
   },
 
-  init() {
-    const { glob, document } = this;
-    glob.emojiChange(document.getElementById('storage'));
-  },
+  init() {},
 
   async action(cache) {
     const data = cache.actions[cache.index];

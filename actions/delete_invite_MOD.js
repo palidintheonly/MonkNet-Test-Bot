@@ -1,12 +1,12 @@
 module.exports = {
-  name: 'Find Invite',
+  name: 'Delete Invite',
   section: 'Invite Control',
   meta: {
     version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
-    downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/find_invite_MOD.js',
+    downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/delete_invite_MOD.js',
   },
 
   subtitle(data) {
@@ -26,11 +26,12 @@ module.exports = {
   <div style="padding-top: 8px;">
     <span class="dbminputlabel">Source Invite</span>
     <textarea class="round" id="invite" rows="1" placeholder="Code or URL | e.g abcdef or discord.gg/abcdef" style="width: 99%; font-family: monospace; white-space: nowrap; resize: none;"></textarea>
-  </div><br>
-</div>
-
-<div style="padding-top: 8px;">
-  <store-in-variable dropdownLabel="Store In" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>
+  </div>
+  <br>
+  <div style="padding-top: 8px;">
+    <span class="dbminputlabel">Reason</span>
+    <textarea class="round" id="reason" rows="1" placeholder="Insert a reason.." style="width: 99%; font-family: monospace; white-space: nowrap; resize: none;"></textarea>
+  </div>
 </div>`;
   },
 
@@ -39,17 +40,18 @@ module.exports = {
   async action(cache) {
     const data = cache.actions[cache.index];
     const invite = this.evalMessage(data.invite, cache);
+    const reason = this.evalMessage(data.reason, cache);
     const client = this.getDBM().Bot.bot;
 
     client
       .fetchInvite(invite)
+      .catch(console.error)
       .then((invite) => {
-        const storage = parseInt(data.storage, 10);
-        const varName = this.evalMessage(data.varName, cache);
-        this.storeValue(invite, storage, varName, cache);
-        this.callNextAction(cache);
-      })
-      .catch(console.error);
+        if (!invite) this.callNextAction(cache);
+        invite.delete(reason);
+      });
+
+    this.callNextAction(cache);
   },
 
   mod() {},

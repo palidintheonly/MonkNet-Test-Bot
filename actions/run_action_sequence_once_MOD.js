@@ -2,7 +2,7 @@ module.exports = {
   name: 'Run Action Sequence Once',
   section: 'Other Stuff',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -31,7 +31,7 @@ module.exports = {
   </p><br>
 </div>
 <div>
-  Run Once:<br>
+  <span class="dbminputlabel">Run Once</span>
   <select id="behavior" class="round">
     <option value="2" selected>Per Server</option>
     <option value="3">Globally</option>

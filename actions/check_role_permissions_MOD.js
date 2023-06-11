@@ -2,7 +2,7 @@ module.exports = {
   name: 'Check Role Permissions',
   section: 'Conditions',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -18,11 +18,10 @@ module.exports = {
   html(isEvent, data) {
     return `
 <role-input dropdownLabel="Source Role" selectId="role" variableContainerId="varNameContainer" variableInputId="varName"></role-input>
-
 <br><br><br>
 
 <div style="padding-top: 8px; width: 80%;">
-  Permission:<br>
+  <span class="dbminputlabel">Permission</span>
   <select id="permission" class="round">
     ${data.permissions[2]}
   </select>

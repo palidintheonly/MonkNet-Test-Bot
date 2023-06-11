@@ -2,15 +2,14 @@ module.exports = {
   name: 'Store Emoji Info',
   section: 'Emoji Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/store_emoji_info_MOD.js',
   },
 
-  subtitle(data) {
-    const emoji = ['You cheater!', 'Temp Variable', 'Server Variable', 'Global Variable'];
+  subtitle(data, presets) {
     const info = [
       'Emoji Object',
       'Emoji Is Animated?',
@@ -26,7 +25,7 @@ module.exports = {
       'Emoji Is Managed By An External Service?',
       'Emoji Requires Colons Surrounding It?',
     ];
-    return `${emoji[parseInt(data.emoji, 10)]} - ${info[parseInt(data.info, 10)]}`;
+    return `${presets.getVariableText(data.emoji, data.varName)} - ${info[parseInt(data.info, 10)]}`;
   },
 
   variableStorage(data, varType) {
@@ -80,63 +79,46 @@ module.exports = {
 
   fields: ['emoji', 'varName', 'info', 'storage', 'varName2'],
 
-  html(isEvent, data) {
+  html() {
     return `
 <div>
-  <div style="float: left; width: 35%;">
-    Source Emoji:<br>
-    <select id="emoji" class="round" onchange="glob.refreshVariableList(this)">
-      ${data.variables[1]}
-    </select>
-  </div>
-  <div id="varNameContainer" style="float: right; width: 60%;">
-    Variable Name:<br>
-    <input id="varName" class="round" type="text" list="variableList"><br>
-  </div>
-</div><br><br><br>
+  <store-in-variable dropdownLabel="Source Emoji" selectId="emoji" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>
+</div>
+<br><br><br>
+
 <div>
-  <div style="padding-top: 8px; width: 70%;">
-    Source Info:<br>
+  <div style="padding-top: 8px; width: 100%;">
+    <span class="dbminputlabel">Source Info</span><br>
     <select id="info" class="round">
-    <option value="0" selected>Emoji Object</option>
-    <option value="1">Emoji Is Animated?</option>
-    <option value="2">Emoji Creation Date</option>
-    <option value="6">Emoji Timestamp</option>
-    <option value="3">Emoji Name</option>
-    <option value="4">Emoji URL</option>
-    <option value="5">Emoji ID</option>
-    <option value="7">Emoji Is Deletable?</option>
-    <option value="8">Emoji Has Been Deleted?</option>
-    <option value="9">Emoji Server</option>
-    <option value="10">Emoji Identifier</option>
-    <option value="11">Emoji Is Managed By An External Service?</option>
-    <option value="12">Emoji Requires Colons Surrounding It?</option>
+      <option value="0" selected>Emoji Object</option>
+      <option value="1">Emoji Is Animated?</option>
+      <option value="2">Emoji Creation Date</option>
+      <option value="6">Emoji Timestamp</option>
+      <option value="3">Emoji Name</option>
+      <option value="4">Emoji URL</option>
+      <option value="5">Emoji ID</option>
+      <option value="7">Emoji Is Deletable?</option>
+      <option value="8">Emoji Has Been Deleted?</option>
+      <option value="9">Emoji Server</option>
+      <option value="10">Emoji Identifier</option>
+      <option value="11">Emoji Is Managed By An External Service?</option>
+      <option value="12">Emoji Requires Colons Surrounding It?</option>
     </select>
   </div>
-</div><br>
+</div>
+<br>
+
 <div>
-  <div style="float: left; width: 35%;">
-    Store In:<br>
-    <select id="storage" class="round">
-      ${data.variables[1]}
-    </select>
-  </div>
-  <div id="varNameContainer2" style="float: right; width: 60%;">
-    Variable Name:<br>
-    <input id="varName2" class="round" type="text"><br>
-    </div>
-    <br><br><br><br><br>
-    <div id="comment" style="padding-top: 30px; padding-top: 8px;">
-      <p>
-      Only works with custom emojis.<br>
-  </div>
+  <store-in-variable dropdownLabel="Store In" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
+</div>
+<br><br><br>
+
+<div id="comment" style="padding-top: 30px; padding-top: 8px;">
+  <p>Only works with custom emojis.</p>
 </div>`;
   },
 
-  init() {
-    const { glob, document } = this;
-    glob.emojiChange(document.getElementById('emoji'));
-  },
+  init() {},
 
   async action(cache) {
     const data = cache.actions[cache.index];

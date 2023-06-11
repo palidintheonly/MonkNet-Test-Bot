@@ -2,16 +2,15 @@ module.exports = {
   name: 'Check Permissions',
   section: 'Permission Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/check_permissions_MOD.js',
   },
 
-  subtitle(data) {
-    const variables = ['', 'Temp Variable', 'Server Variable', 'Global Variable'];
-    return `For ${variables[parseInt(data.storage, 10)]} (${data.varName})`;
+  subtitle(data, presets) {
+    return presets.getVariableText(data.storage, data.varName);
   },
 
   variableStorage(data, varType) {
@@ -65,33 +64,29 @@ module.exports = {
     return `
 <div style="width: 550px; height: 350px; overflow-y: scroll;">
   <div style="padding-top: 8px;">
-    <div style="float: left; width: 35%;">
-      Source Permissions:<br>
-      <select id="storage" class="round" onchange="glob.refreshVariableList(this)">
-        ${data.variables[1]}
-      </select><br>
-    </div>
-    <div style="float: right; width: 60%;">
-      Variable Name:<br>
-      <input id="varName" class="round" type="text" list="variableList"><br>
-    </div>
-  </div><br><br><br>
+    <store-in-variable dropdownLabel="Source Permissions" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>
+  </div>
+  <br><br><br>
+
   <div style="padding-top: 8px;">
     <div id="checkbox" style="float: left; width: 80%;">
     </div>
   </div>
+
   <div id="conditions" style="padding-top: 8px;">
     ${data.conditions[0]}
-  </div><br><br><br>
+  </div>
+  <br><br><br>
+
   <div style="padding-top: 8px;">
     <div style="float: left; width: 35%;">
-      Missing Permissions:<br>
+      <span class="dbminputlabel">Missing Permissions</span>
       <select id="storage2" class="round" onchange="glob.variableChange(this, 'varNameContainer')">
         ${data.variables[0]}
       </select>
     </div>
     <div id="varNameContainer" style="float: right; width: 60%;">
-      Variable Name:<br>
+      <span class="dbminputlabel">Variable Name</span>
       <input id="varName2" class="round" type="text">
     </div>
   </div>

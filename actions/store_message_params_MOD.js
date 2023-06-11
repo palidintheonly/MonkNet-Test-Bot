@@ -2,15 +2,14 @@ module.exports = {
   name: 'Store Message Params',
   section: 'Messaging',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/store_message_params_MOD.js',
   },
 
-  subtitle(data) {
-    const message = ['Command Message', 'Temp Variable', 'Server Variable', 'Global Variable'];
+  subtitle(data, presets) {
     const info = [
       'One Parameter',
       'Multiple Parameters',
@@ -19,7 +18,7 @@ module.exports = {
       'Mentioned Role',
       'Mentioned Channel',
     ];
-    return `${message[parseInt(data.message, 10)]} - ${info[parseInt(data.info, 10)]} #${data.ParamN}`;
+    return `${presets.getMessageText(data.message, data.varName)} - ${info[parseInt(data.info, 10)]} #${data.ParamN}`;
   },
 
   variableStorage(data, varType) {
@@ -50,60 +49,54 @@ module.exports = {
 
   fields: ['message', 'varName', 'info', 'ParamN', 'separator', 'storage', 'varName2', 'count'],
 
-  html(isEvent, data) {
+  html() {
     return `
-<div id="DiVScroll" style="height: 350px; overflow-y: scroll; overflow-x: hidden; padding-top: 8px;">
-<message-input dropdownLabel="Source Message" selectId="message" variableContainerId="varNameContainer" variableInputId="varName"></message-input>
-<br><br><br>
-  <div style="padding-top: 8px;">
-    <div style="float: left; width: 35%; margin-right: 8px;">
-      Source Info:<br>
-      <select id="info" class="round" onchange="glob.onChange1(this)">
-        <option value="0" selected>One Parameter</option>
-        <option value="1">Multiple Parameters</option>
-        <option value="2">Mentioned User</option>
-        <option value="3">Mentioned Member</option>
-        <option value="4">Mentioned Role</option>
-        <option value="5">Mentioned Channel</option>
-      </select>
+  <div id="DiVScroll" style="height: 350px; overflow-y: scroll; overflow-x: hidden;">
+
+    <div style="float: left; width: 100%; padding-top: 8px;">
+      <message-input dropdownLabel="Source Message" selectId="message" variableContainerId="varNameContainer" variableInputId="varName"></message-input>
     </div>
-    <div style="float: left; width: 64%;">
-      <span id="infoCountLabel">Parameter Number:</span><br>
-      <input id="ParamN" class="round" type="text" value="1">
+  
+    <div style="float: left; padding-top: 16px; width: 100%;">
+      <div style="float: left; width: 35%; margin-right: 8px;">
+        <span class="dbminputlabel">Source Info</span>
+        <select id="info" class="round" onchange="glob.onChange1(this)">
+          <option value="0" selected>One Parameter</option>
+          <option value="1">Multiple Parameters</option>
+          <option value="2">Mentioned User</option>
+          <option value="3">Mentioned Member</option>
+          <option value="4">Mentioned Role</option>
+          <option value="5">Mentioned Channel</option>
+        </select>
+      </div>
+      <div style="float: right; width: 60%;">
+        <span class="dbminputlabel" id="infoCountLabel">Parameter Number</span>
+        <input id="ParamN" class="round" type="text" value="1"></input>
+      </div>
     </div>
-  </div><br><br><br>
-  <div id="DiVcount" style="padding-top: 8p;">
-    <div style="float: left; width: 98%;">
-      Parameter Count:<br>
-      <input id="count" placeholder="Leave blank for all..." class="round" type="text">
-    </div><br><br><br></div>
-    <div id="DiVseparator" style="padding-top: 8px;">
-      <div style="float: left; width: 98%;">
-        Custom Parameter Separator:<br>
-        <input id="separator" placeholder="Read the Note below | Default Parameter Separator:" class="round" type="text">
-      </div><br><br><br></div>
-      <div style="padding-top: 8px;">
-        <div style="float: left; width: 35%; margin-right: 8px;">
-          Store In:<br>
-          <select id="storage" class="round">
-            ${data.variables[1]}
-          </select>
-        </div>
-        <div id="varNameContainer2" style="float: left; width: 64%;">
-          Variable Name:<br>
-          <input id="varName2" class="round" type="text"><br>
-        </div>
+  
+    <div id="DiVcount" style="float: left; padding-top: 16px; width: 100%;">
+      <div style="float: left; width: 100%;">
+        <span class="dbminputlabel">Parameter Count</span>
+        <input id="count" placeholder="Leave blank for all..." class="round" type="text"></input>
       </div>
-      <div style="float: left; width: 90%; padding-top: 8px;">
-        <p>
-          <b><span style="color:#ffffff; font-size: 20px;">Note:</span></b><br>
-          Leave the "Custom Parameter Separator" empty if you want to use the "Parameter Separator" set in your bots "Settings" page.<br>
-          "Custom Parameter Separator" supports Regex
-        </p>
+    </div>
+  
+    <div id="DiVseparator" style="float: left; padding-top: 16px; width: 100%;">
+      <div style="float: left; width: 100%;">
+        <span class="dbminputlabel">Custom Parameter Separator</span>
+        <span class="dbminputlabel">
+          <span title='• Leave the "Custom Parameter Separator" empty if you want to use the\nDefault "Parameter Separator" set in your bots "Settings" page.\n• "Custom Parameter Separator" supports Regex.'>Hover over me to read <b>Notes</b></span></span>
+  
+        <input id="separator" placeholder="Read the Note below | Default Parameter Separator:" class="round" type="text"></input>
       </div>
+    </div>
+  
+    <div style="float: left; padding-top: 8px; width: 100%; padding-top: 16px;">
+      <store-in-variable dropdownLabel="Store In" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
     </div>
   </div>
-</div>`;
+`;
   },
 
   init() {
