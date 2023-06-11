@@ -2,7 +2,7 @@ module.exports = {
   name: 'Clear reactions from message',
   section: 'Reaction Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -17,7 +17,7 @@ module.exports = {
 
   html() {
     return `
-<message-input dropdownLabel="Source Message" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></message-input>`;
+      <message-input dropdownLabel="Source Message(s)" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></message-input>`;
   },
 
   init() {},

@@ -2,7 +2,7 @@ module.exports = {
   name: 'Set Role Permissions',
   section: 'Role Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -63,12 +63,14 @@ module.exports = {
 
   html() {
     return `
-<role-input dropdownLabel="Source Role" selectId="role" variableContainerId="varNameContainer" variableInputId="varName"></role-input>
-<br><br><br>
+    <div>
+      <role-input dropdownLabel="Source Role" selectId="role" variableContainerId="varNameContainer" variableInputId="varName"></role-input>
+    </div>
+    <br><br><br>
 
 <div style="padding-top: 8px;">
   <div style="float: left; width: 45%;">
-    Permission:<br>
+    <span class="dbminputlabel">Permission</span>
     <select id="permission" class="round">
       <optgroup label="General Server Permissions">
         <option value="31">View Channels</option>
@@ -131,15 +133,17 @@ module.exports = {
     </select>
   </div>
   <div style="padding-left: 5%; float: left; width: 55%;">
-    Change To:<br>
-      <select id="state" class="round">
+    <span class="dbminputlabel">Change To</span>
+    <select id="state" class="round">
       <option value="0" selected>Granted</option>
       <option value="1">Denied</option>
     </select>
   </div>
-</div><br><br><br>
+</div>
+<br><br><br>
+
 <div style="padding-top: 8px;">
-  Reason:<br>
+  <span class="dbminputlabel">Reason</span>
   <textarea id="reason" rows="2" placeholder="Insert reason here... (optional)" style="width: 99%; font-family: monospace; white-space: nowrap; resize: none;"></textarea>
 </div>
 <style>
@@ -157,7 +161,7 @@ module.exports = {
   async action(cache) {
     const data = cache.actions[cache.index];
     const { FLAGS, ALL } = this.getDBM().DiscordJS.Permissions;
-    const role = await this.getRoleFromData(data.storage, data.varName, cache);
+    const role = await this.getRoleFromData(data.role, data.varName, cache);
     const info = parseInt(data.permission, 10);
     const reason = this.evalMessage(data.reason, cache);
 

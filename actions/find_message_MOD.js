@@ -2,24 +2,16 @@ module.exports = {
   name: 'Find Message',
   section: 'Messaging',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/find_message_MOD.js',
   },
 
-  subtitle(data) {
-    const channels = [
-      'Same Channel',
-      'Mentioned Channel',
-      '1st Server Channel',
-      'Temp Variable',
-      'Server Variable',
-      'Global Variable',
-    ];
+  subtitle(data, presets) {
     const info = ['Find by Content', 'Find by ID'];
-    return `${channels[parseInt(data.channel, 10)]} - ${info[parseInt(data.info, 10)]}`;
+    return `${presets.getChannelText(data.channel, data.info)} - ${info[parseInt(data.info, 10)]}`;
   },
 
   variableStorage(data, varType) {
@@ -29,7 +21,7 @@ module.exports = {
 
   fields: ['channel', 'varName', 'info', 'search', 'storage', 'varName2'],
 
-  html(isEvent, data) {
+  html() {
     return `
 <div style="padding-top: 8px;">
   <channel-input dropdownLabel="Source Channel" selectId="channel" variableContainerId="varNameContainer" variableInputId="varName"></channel-input>
@@ -37,30 +29,23 @@ module.exports = {
 
   <div>
     <div style="float: left; width: 70%;">
-      Find by:<br>
+      <span class="dbminputlabel">Find by</span>
       <select id="info" class="round">
       <option value="0" selected>Find by Content</option>
       <option value="1">Find by ID</option>
     </select>
-  </div><br><br><br>
+  </div>
+  <br><br><br>
+  
   <div style="float: left; width: 70%;">
-    Search for:<br>
+    <span class="dbminputlabel">Search for</span>
     <input id="search" class="round" type="text"><br>
   </div>
 </div>
 <br>
 
 <div>
-  <div style="float: left; width: 35%;">
-    Store In:<br>
-    <select id="storage" class="round">
-      ${data.variables[1]}
-    </select>
-  </div>
-  <div id="varNameContainer2" style="float: right; width: 60%;">
-    Variable Name:<br>
-    <input id="varName2" class="round" type="text"><br>
-  </div>
+  <store-in-variable dropdownLabel="Store In" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
 </div>
 <br><br><br>
 

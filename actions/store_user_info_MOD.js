@@ -2,15 +2,14 @@ module.exports = {
   name: 'Store User Info',
   section: 'User Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/store_user_info_MOD.js',
   },
 
-  subtitle(data) {
-    const users = ['Mentioned User', 'Command Author', 'Temp Variable', 'Server Variable', 'Global Variable'];
+  subtitle(data, presets) {
     const info = [
       'Object',
       'ID',
@@ -28,7 +27,7 @@ module.exports = {
       'Flags List',
       'Client Status',
     ];
-    return `${users[parseInt(data.user, 10)]} - User ${info[parseInt(data.info, 10)]}`;
+    return `${presets.getMemberText(data.user, data.varName)} - User ${info[parseInt(data.info, 10)]}`;
   },
 
   variableStorage(data, varType) {
@@ -78,16 +77,16 @@ module.exports = {
 
   fields: ['user', 'varName', 'info', 'storage', 'varName2'],
 
-  html(isEvent, data) {
+  html() {
     return `
   <div>
-  <member-input dropdownLabel="Source Member" selectId="user" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
+    <member-input dropdownLabel="Source Member" selectId="user" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
   </div>
   <br><br><br>
 
   <div>
     <div style="padding-top: 8px; width: 70%">
-      Source Info:<br>
+      <span class="dbminputlabel">Source Info</span>
       <select id="info" class="round">
         <option value="0" selected>User Object</option>
         <option value="1">User ID</option>
@@ -110,16 +109,7 @@ module.exports = {
   <br>
   
   <div>
-    <div style="float: left; width: 35%">
-      Store In:<br>
-      <select id="storage" class="round">
-        ${data.variables[1]}
-      </select>
-    </div>
-    <div id="varNameContainer2" style="float: right; width: 60%">
-      Variable Name:<br>
-      <input id="varName2" class="round" type="text"><br>
-    </div>
+    <store-in-variable dropdownLabel="Store In" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
   </div>`;
   },
 

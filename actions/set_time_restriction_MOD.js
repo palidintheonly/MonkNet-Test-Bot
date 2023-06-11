@@ -2,7 +2,7 @@ module.exports = {
   name: 'Set Time Restriction',
   section: 'Other Stuff',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -49,7 +49,7 @@ module.exports = {
 <div>
   <div style="padding-top: 8px;">
     <div style="float: left; width: 35%;">
-      Time Measurement:<br>
+      <span class="dbminputlabel">Time Measurement</span><br>
       <select id="measurement" class="round" onchange="glob.onChange(this)">
         <option value="0">Milliseconds</option>
         <option value="1" selected>Seconds</option>
@@ -58,40 +58,37 @@ module.exports = {
       </select>
     </div>
     <div style="padding-left: 5%; float: left; width: 65%;">
-      Cooldown Time:<br>
+      <span class="dbminputlabel">Cooldown Time</span><br>
       <input id="value" class="round" type="text" placeholder="1 = 1 second"><br>
     </div>
-  </div><br><br><br>
+  </div>
+  <br><br><br>
+  
   <div style="padding-top: 8px;">
     <div style="float: left; width: 35%;">
-      Reset After Restart:<br>
+      <span class="dbminputlabel">Reset After Restart?</span><br>
       <select id="save" class="round"><br>
         <option value="0" selected>False</option>
         <option value="1">True</option>
       </select>
     </div>
     <div style="padding-left: 5%; float: left; width: 59%;">
-      Restrict By:<br>
+      <span class="dbminputlabel">Restrict By</span><br>
       <select id="restrict" class="round"><br>
         <option value="0" selected>Global</option>
         <option value="1">Server</option>
       </select>
     </div>
-  </div><br><br><br>
+  </div>
+  <br><br><br>
+  
   <div style="padding-top: 8px;">
     ${data.conditions[0]}
-  </div><br><br><br>
+  </div>
+  <br><br><br>
+  
   <div style="padding-top: 8px;">
-    <div style="float: left; width: 35%;">
-      Store Left Time In (s):<br>
-      <select id="storage" class="round" onchange="glob.variableChange(this, 'varNameContainer')">
-        ${data.variables[0]}
-      </select>
-    </div>
-    <div id="varNameContainer" style="float: right; width: 60%; display: none;">
-      Variable Name:<br>
-      <input id="varName" class="round" type="text"><br>
-    </div>
+    <store-in-variable dropdownLabel="Store Time Left In (s)" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>
   </div>
 </div>`;
   },
@@ -175,7 +172,6 @@ module.exports = {
           break;
       }
     };
-    glob.variableChange(document.getElementById('storage'), 'varNameContainer');
     glob.onChangeTrue(document.getElementById('iftrue'));
     glob.onChangeFalse(document.getElementById('iffalse'));
     glob.onChange(document.getElementById('Measurement'));
@@ -196,7 +192,7 @@ module.exports = {
     }
 
     const TRData = cache.interaction ?? cache.msg;
-    const timeLeft = this.TimeRestriction(TRData, cmd, cache);
+    const timeLeft = await this.TimeRestriction(TRData, cmd, cache);
     if (!timeLeft) {
       this.executeResults(false, data, cache);
     } else {
@@ -207,10 +203,11 @@ module.exports = {
     }
   },
 
-  mod(DBM) {
+  async mod(DBM) {
     let Cooldown;
-    DBM.Actions.LoadTimeRestriction = function LoadTimeRestriction(cache) {
-      Cooldown = this.getVariable(3, 'DBMCooldown', cache);
+    DBM.Actions.LoadTimeRestriction = async function LoadTimeRestriction(cache) {
+      Cooldown = await this.getVariable(3, 'DBMCooldown', cache);
+
       if (typeof Cooldown === 'undefined') {
         Cooldown = {};
       } else if (typeof Cooldown === 'string') {
@@ -237,11 +234,11 @@ module.exports = {
       }
     };
 
-    DBM.Actions.TimeRestriction = function TimeRestriction(TRData, cmd, cache) {
+    DBM.Actions.TimeRestriction = async function TimeRestriction(TRData, cmd, cache) {
       const author = TRData.author ?? TRData.user;
       const { channel } = TRData;
 
-      if (typeof Cooldown === 'undefined') this.LoadTimeRestriction(cache);
+      if (typeof Cooldown === 'undefined') await this.LoadTimeRestriction(cache);
       const { Files } = DBM;
       let value = parseInt(this.evalMessage(cache.actions[cache.index].value, cache), 10);
       const measurement = parseInt(cache.actions[cache.index].measurement, 10);

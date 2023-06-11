@@ -1,8 +1,9 @@
 module.exports = {
   name: 'Find Custom Emoji in Current Server',
+  displayName: 'Find Custom Emoji/Sticker in Server',
   section: 'Emoji Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -19,34 +20,34 @@ module.exports = {
     return [data.varName, 'Emoji'];
   },
 
-  fields: ['info', 'find', 'storage', 'varName'],
+  fields: ['server', 'varName2', 'info', 'find', 'storage', 'varName'],
 
-  html(_isEvent, data) {
+  html() {
     return `
 <div>
-  <div style="float: left; width: 40%;">
-    Source Field:<br>
+  <server-input dropdownLabel="Source Server" selectId="server" variableContainerId="varNameContainer2" variableInputId="varName2"></server-input>
+</div>
+<br><br><br>
+
+<div>
+  <div style="float: left; width: 35%;">
+    <span class="dbminputlabel">Source Field</span>
     <select id="info" class="round">
       <option value="0" selected>Emoji ID</option>
       <option value="1">Emoji Name</option>
+      <option value="2">Sticker ID</option>
+      <option value="3">Sticker Name</option>
     </select>
   </div>
-  <div style="float: right; width: 55%;">
-    Search Value:<br>
+  <div style="float: right; width: 60%;">
+    <span class="dbminputlabel">Search Value</span>
     <input id="find" class="round" type="text">
   </div>
-</div><br><br><br>
+</div>
+<br><br><br>
+
 <div style="padding-top: 8px;">
-  <div style="float: left; width: 35%;">
-    Store In:<br>
-    <select id="storage" class="round">
-      ${data.variables[1]}
-    </select>
-  </div>
-  <div id="varNameContainer" style="float: right; width: 60%;">
-    Variable Name:<br>
-    <input id="varName" class="round" type="text">
-  </div>
+  <store-in-variable dropdownLabel="Store In" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>
 </div>`;
   },
 
@@ -54,7 +55,7 @@ module.exports = {
 
   async action(cache) {
     const data = cache.actions[cache.index];
-    const { server } = cache;
+    const server = await this.getServerFromData(data.server, data.varName2, cache);
     const info = parseInt(data.info, 10);
     const find = this.evalMessage(data.find, cache);
     let result;
@@ -66,6 +67,11 @@ module.exports = {
       case 1:
         result = server.emojis.cache.find((e) => e.name === find);
         break;
+      case 2:
+        result = server.stickers.cache.get(find);
+        break;
+      case 3:
+        result = server.stickers.cache.find((s) => s.name === find);
       default:
         break;
     }

@@ -2,7 +2,7 @@ module.exports = {
   name: 'Store Invite Info',
   section: 'Channel Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -71,14 +71,15 @@ module.exports = {
 
   fields: ['invite', 'info', 'storage', 'varName'],
 
-  html(_isEvent, data) {
+  html() {
     return `
 <div style="padding-top: 8px;">
-  Source Invite:<br>
+  <span class="dbminputlabel">Source Invite</span>
   <textarea class="round" id="invite" rows="1" placeholder="Code or URL | e.g abcdef or discord.gg/abcdef" style="width: 99%; font-family: monospace; white-space: nowrap; resize: none;"></textarea>
-</div><br>
-<div style="padding-top: 8px; width: 70%;">
-  Source Info:<br>
+</div>
+
+<div style="padding-top: 16px; width: 70%;">
+  <span class="dbminputlabel">Source Info</span>
   <select id="info" class="round">
     <option value="0" selected>Channel object</option>
     <option value="1">Creator of invite</option>
@@ -92,24 +93,15 @@ module.exports = {
     <option value="9">Invite server member count</option>
     <option value=10">Invite Code</option>
   </select>
-</div><br>
-<div style="float: left; width: 35%; padding-top: 8px;">
-  Store Result In:<br>
-  <select id="storage" class="round" onchange="glob.variableChange(this, 'varNameContainer')">
-    ${data.variables[0]}
-  </select>
 </div>
-<div id="varNameContainer" style="float: right; display: none; width: 60%; padding-top: 8px;">
-  Variable Name:<br>
-  <input id="varName" class="round" type="text">
+<br>
+
+<div>
+  <store-in-variable dropdownLabel="Store In" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>
 </div>`;
   },
 
-  init() {
-    const { glob, document } = this;
-
-    glob.variableChange(document.getElementById('storage'), 'varNameContainer');
-  },
+  init() {},
 
   async action(cache) {
     const data = cache.actions[cache.index];
@@ -124,37 +116,37 @@ module.exports = {
     let result;
     switch (info) {
       case 0:
-        result = invite.channel;
+        result = inviteInfo.channel;
         break;
       case 1:
-        result = invite.inviter;
+        result = inviteInfo.inviter;
         break;
       case 2:
-        result = invite.createdAt;
+        result = inviteInfo.createdAt;
         break;
       case 3:
-        result = invite.expiresAt;
+        result = inviteInfo.expiresAt;
         break;
       case 4:
-        result = invite.guild;
+        result = inviteInfo.guild;
         break;
       case 5:
-        result = invite.maxUses;
+        result = inviteInfo.maxUses;
         break;
       case 6:
-        result = invite.temporary;
+        result = inviteInfo.temporary;
         break;
       case 7:
-        result = invite.url;
+        result = inviteInfo.url;
         break;
       case 8:
-        result = invite.uses;
+        result = inviteInfo.uses;
         break;
       case 9:
-        result = invite.memberCount;
+        result = inviteInfo.memberCount;
         break;
       case 10:
-        result = invite.code;
+        result = inviteInfo.code;
         break;
       default:
         break;

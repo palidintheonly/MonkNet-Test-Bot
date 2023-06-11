@@ -2,23 +2,21 @@ module.exports = {
   name: 'Delete Server',
   section: 'Server Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
     downloadURL: 'https://github.com/dbm-network/mods/blob/master/actions/delete_server_MOD.js',
   },
 
-  subtitle(data) {
-    const servers = ['Current Server', 'Temp Variable', 'Server Variable', 'Global Variable'];
-    const index = parseInt(data.server, 10);
-    return data.server === '0' ? `${servers[index]}` : `${servers[index]} - ${data.varName}`;
+  subtitle(data, presets) {
+    return presets.getServerText(data.server, data.varName);
   },
 
   fields: ['server', 'varName'],
 
   html() {
-    return `<server-input dropdownLabel="Source Server" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>`;
+    return '<server-input dropdownLabel="Source Server" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>';
   },
 
   init() {},

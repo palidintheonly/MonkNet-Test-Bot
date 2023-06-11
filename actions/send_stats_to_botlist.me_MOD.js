@@ -1,9 +1,9 @@
 module.exports = {
   name: 'Sends Stats to Botlist.me',
-  displayname: 'Sends Stats to Botlist.me',
+  displayname: 'Send Stats to Botlist.me',
   section: 'Other Stuff',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -20,12 +20,12 @@ module.exports = {
   html() {
     return `
   <div id="modinfo">
-    <div style="float: left; width: 99%; padding-top: 8px;">
-      Your Botlist.me Authorization Token:<br>
+    <div style="float: left; width: 100%; padding-top: 8px;">
+      <span class="dbminputlabel">Botlist.me Authorization Token</span>
       <input id="token" class="round" type="text">
     </div><br>
-    <div style="float: left; width: 90%; padding-top: 8px;">
-      Info to Send:<br>
+    <div style="float: left; width: 100%; padding-top: 8px;">
+      <span class="dbminputlabel">Info to Send</span>
       <select id="info" class="round">
       <option value="0">Send Server Count Only</option>
       <option value="1">Send Shard & Server Count</option>
@@ -48,12 +48,15 @@ module.exports = {
     const client = this.getDBM().Bot.bot;
 
     const body = { server_count: client.guilds.cache.size };
-    if (info === 1) body.shard_count = client.shard.count;
+    if (info === 1) body.shard_count = client.shard?.count;
 
     const response = await fetch(`https://api.botlist.me/api/v1/bots/${client.user.id}/stats?from=DBM`, {
-      body,
-      headers: { authorization: token },
       method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        authorization: token,
+        'Content-Type': 'application/json',
+      },
     }).catch((err) => this.displayError(data, cache, err));
     if (response) {
       const res = await response.json();

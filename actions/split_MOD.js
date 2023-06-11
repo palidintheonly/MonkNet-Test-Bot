@@ -2,7 +2,7 @@ module.exports = {
   name: 'Split',
   section: 'Other Stuff',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: false,
     author: 'DBM Mods',
     authorUrl: 'https://github.com/dbm-network/mods',
@@ -20,34 +20,27 @@ module.exports = {
 
   fields: ['split', 'spliton', 'storage', 'varName'],
 
-  html(_isEvent, data) {
+  html() {
     return `
 <div id ="wrexdiv" style="width: 550px; height: 350px; overflow-y: scroll;">
-  <div id="modinfo">
-    Split Text:<br>
+  <div style="padding-top: 8px;">
+    <span class="dbminputlabel">Split Text</span><br>
     <textarea id="split" rows="2" placeholder="Insert text here..." style="width: 99%; font-family: monospace; white-space: nowrap; resize: none;"></textarea>
-</div><br>
-  <div style="float: left; width: 45%; padding-top: 8px;">
-    Split on:<br>
-    <input id="spliton" class="round" type="text">
-</div><br><br><br><br>
-  <div style="float: left; width: 35%;">
-    Store In:<br>
-    <select id="storage" class="round">
-      ${data.variables[1]}
-    </select>
   </div>
-  <div id="varNameContainer" style="float: right; width: 60%;">
-    Variable Name:<br>
-    <input id="varName" class="round" type="text"><br>
+  <br>
+  <div style="float: left; width: 45%; padding-top: 8px;">
+    <span class="dbminputlabel">Split On</span><br>
+    <input id="spliton" class="round" type="text">
+  </div>
+  <br><br><br><br>
+
+  <div>
+    <store-in-variable dropdownLabel="Store In" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></store-in-variable>
   </div>
 </div>`;
   },
 
-  init() {
-    const { glob, document } = this;
-    glob.variableChange(document.getElementById('storage'), 'varNameContainer');
-  },
+  init() {},
 
   async action(cache) {
     const data = cache.actions[cache.index];
