@@ -1,46 +1,24 @@
 {
-  "name": "monknet",
-  "author": "Robert Borghese",
-  "main": "bot.js",
-  "version": "1.1.0",
-  "dependencies": {
-    "@discordjs/opus": "latest",
-    "@discordjs/voice": "latest",
-    "@themondon/discord-player-v13": "^5.2.4",
-    "chalk": "^5.2.0",
-    "discord.js": "^13.8.0",
-    "ent": "^2.2.0",
-    "ffmpeg-static": "latest",
-    "fstorm": "latest",
-    "index.js": "^0.0.3",
-    "jimp": "^0.3.5",
-    "jsonpath": "^1.1.1",
-    "loadavg-windows": "^1.1.1",
-    "moment": "^2.29.4",
-    "node": "^19.2.0",
-    "node-cron": "^3.0.2",
-    "normalize-date": "^0.0.4",
-    "tweetnacl": "latest",
-    "weather-js": "^2.0.0",
-    "xmldom": "^0.6.0",
-    "zip-local": "^0.3.5",
-    "youtube-dl-exec": "^2.0.2",
-    "ytdl-core": "^4.10.0"
-  },
-  "description": "> # 06.04.2023-bot-t35t-4048 > 06.04.2023¬bot t35t#4048",
+  "$schema": "https://json.schemastore.org/package",
+  "name": "mods",
+  "repository": "https://github.com/dbm-network/mods",
+  "private": true,
+  "license": "MIT",
   "scripts": {
-    "test": "test"
+    "lint": "eslint --cache actions events extensions sharder",
+    "lint:fix": "eslint --fix --cache actions events extensions sharder",
+    "prettier:check": "prettier --check **/*.{js,json,yml}",
+    "prettier:fix": "prettier --write **/*.{js,json,yml}"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PalNet-Dev/MonkNet-Test-Bot.git"
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
   },
-  "license": "UNLICENCED",
-  "bugs": {
-    "url": "https://github.com/PalNet-Dev/MonkNet-Test-Bot/issues"
-  },
-  "homepage": "https://github.com/PalNet-Dev/MonkNet-Test-Bot#readme",
-  "keywords": [
-    "tst"
-  ]
+  "devDependencies": {
+    "eslint": "^8.0.1",
+    "eslint-config-aqua": "^9.0.2",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
+  }
 }
